@@ -1,0 +1,9 @@
+av==14.4.0
+numpy==2.3.0
+opencv_python==4.11.0.86
+Pillow==11.2.1
+SQLAlchemy==2.0.41
+streamlit==1.45.1
+streamlit_webrtc==0.62.4
+ultralytics==8.3.155
+yt_dlp==2025.6.9
