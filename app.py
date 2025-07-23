@@ -81,7 +81,7 @@ if page == "🏠 | Home":
 
 # Detection Page
 elif page == "🔎 | Detection":
-    st.title("Corn Disease Detection using YOLOv8")
+    st.title("Potato Leaf Disease Detection using YOLOv11")
 
     st.sidebar.header("ML Model Config")
     confidence = float(st.sidebar.slider("Select Model Confidence (%)", 25, 100, 40)) / 100
@@ -99,7 +99,6 @@ elif page == "🔎 | Detection":
     source_img = None
     source_vid = None
 
-    # If image is selected
     if source_radio == settings.IMAGE:
         source_img = st.sidebar.file_uploader("Choose an image...", type=("jpg", "jpeg", "png", 'bmp', 'webp'))
 
@@ -155,14 +154,8 @@ elif page == "🔎 | Detection":
                         st.error("Error running detection.")
                         st.error(ex)
 
-    elif source_radio == settings.VIDEO:
-        helper.play_stored_video(confidence, model)
-
     elif source_radio == settings.WEBCAM:
         helper.play_webcam(confidence, model)
-
-    elif source_radio == settings.YOUTUBE:
-        helper.play_youtube_video(confidence, model)
 
     else:
         st.error("Please select a valid source type!")
@@ -175,28 +168,41 @@ elif page == "⌛ | History":
     if not history:
         st.warning("No Detection History")
     else:
-        for record in history:
-            st.write(f"Source Type: {record.source_type}")
-            st.write(f"Source Path: {record.source_path}")
-            image_data = base64.b64encode(record.detected_image).decode('utf-8')
-            st.markdown(f'<img class="history-image" src="data:image/png;base64,{image_data}" alt="Detected Image">', unsafe_allow_html=True)
-            if st.button('Delete', key=f'delete_{record.id}'):
-                helper.delete_detection_record(record.id)
-                st.rerun()
-
+        # Tampilkan history dalam grid layout yang lebih rapi
+        for i, record in enumerate(history):
+            with st.container():
+                col1, col2 = st.columns([2, 1])
+                
+                with col1:
+                    st.subheader(f"Detection #{i+1}")
+                    st.write(f"**Source Type:** {record.source_type}")
+                    st.write(f"**Source Path:** {record.source_path}")
+                    
+                    # Display image with controlled size
+                    image_data = base64.b64encode(record.detected_image).decode('utf-8')
+                    st.markdown(f'<img class="history-image" src="data:image/png;base64,{image_data}" alt="Detected Image">', unsafe_allow_html=True)
+                
+                with col2:
+                    st.write("")  # spacer
+                    st.write("")  # spacer
+                    if st.button('🗑️ Delete', key=f'delete_{record.id}', type='secondary'):
+                        helper.delete_detection_record(record.id)
+                        st.rerun()
+                
+                st.divider()  # Add separator between records
 # About Page
 elif page == "ℹ️ | About":
-    st.title("About This Project")
+    st.title("Tentang Proyek Ini")
     st.write("""
-        This project is a web-based application that uses AI technology with the YOLOv11 model to detect and identify diseases on potato leaves accurately and in real-time. 
-        The automatic detection system can process images, videos, or webcam feeds directly, helping farmers and researchers monitor the health of potato plants to improve crop productivity.
+        Proyek ini adalah aplikasi berbasis web yang menggunakan teknologi AI dengan model YOLOv11 untuk mendeteksi dan mengidentifikasi penyakit pada daun kentang secara akurat dan real-time.
+        Sistem deteksi otomatis ini dapat memproses gambar, video, atau umpan webcam secara langsung, membantu petani dan peneliti memantau kesehatan tanaman kentang untuk meningkatkan produktivitas hasil panen.
     """)
     
-    st.subheader("Technologies Used:")
+    st.subheader("Teknologi yang Digunakan:")
     st.write("""
-        - **Streamlit**: For building the web application interface.
-        - **YOLOv11**: For object detection and disease identification.
-        - **OpenCV**: For image processing tasks.
-        - **PIL (Pillow)**: For image handling and manipulation.
-        - **SQLite**: For storing detection history.
+        - **Streamlit**: Untuk membangun antarmuka aplikasi web.
+        - **YOLOv11**: Untuk deteksi objek dan identifikasi penyakit.
+        - **OpenCV**: Untuk tugas pemrosesan gambar.
+        - **PIL (Pillow)**: Untuk pengelolaan dan manipulasi gambar.
+        - **SQLite**: Untuk menyimpan riwayat deteksi.
     """)

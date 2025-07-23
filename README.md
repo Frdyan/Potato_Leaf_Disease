@@ -1,1 +1,1 @@
-# corn-disease-detection-yolov8
+#Potato-leaf-disease-detection-yolov11

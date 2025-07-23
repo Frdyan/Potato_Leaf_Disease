@@ -15,11 +15,9 @@ ROOT = ROOT.relative_to(Path.cwd())
 
 # Sources
 IMAGE = 'Image'
-VIDEO = 'Video'
 WEBCAM = 'Webcam'
-YOUTUBE = 'YouTube'
 
-SOURCES_LIST = [IMAGE, VIDEO, WEBCAM, YOUTUBE]
+SOURCES_LIST = [IMAGE, WEBCAM]
 
 # Images config
 IMAGES_DIR = ROOT / 'images'
@@ -29,7 +27,7 @@ DEFAULT_DETECT_IMAGE = IMAGES_DIR / 'potato-disease-early-blight.png'
 
 # ML Model config
 MODEL_DIR = ROOT / 'weights'
-DETECTION_MODEL = MODEL_DIR / 'best.pt'
+DETECTION_MODEL = MODEL_DIR / 'best-YoloV11LMV5.pt'
 
 # Webcam
 WEBCAM_PATH = 0
