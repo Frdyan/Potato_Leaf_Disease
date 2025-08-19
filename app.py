@@ -1,4 +1,3 @@
-# Import modules
 from pathlib import Path
 import PIL
 import tempfile
@@ -6,21 +5,17 @@ import cv2
 import base64
 import streamlit as st
 
-# Local Modules
 import settings
 import helper
 import asyncio
 import sys
 import os
 
-# Fix untuk event loop di Windows (Python >= 3.8)
 if sys.platform.startswith('win') and sys.version_info >= (3, 8):
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
-# Matikan Streamlit file watcher yang menyebabkan error dengan torch.classes
 os.environ["STREAMLIT_SERVER_ENABLE_FILE_WATCHER"] = "false"
 
-# Setting page layout
 st.set_page_config(
     page_title="Potato Leaf Disease Detection using YOLOv11",
     page_icon="🥔",
@@ -28,7 +23,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Customizing the sidebar with background color
 st.markdown("""
     <style>
         .custom-header {
@@ -49,7 +43,6 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# Sidebar with custom header     and different background color for the main content
 st.sidebar.markdown('<div class="custom-header"><h2>🥔 | Potato Leaf Disease Detection</h2></div>', unsafe_allow_html=True)
 
 page = st.sidebar.selectbox("Select Page", ["🏠 | Home", "🔎 | Detection", "⌛ | History", "ℹ️ | About"], index=0, key='page_selector')
@@ -65,7 +58,6 @@ if page == "🏠 | Home":
         peneliti dalam memantau kesehatan tanaman kentang untuk meningkatkan produktivitas hasil panen.
     """)
 
-    # Gambar utama dengan ukuran besar
     default_image_path = str(settings.DEFAULT_IMAGE)
     default_image = PIL.Image.open(default_image_path)
     st.image(default_image_path, caption="Potato Plant Image by PngTree.com", use_container_width=True)
@@ -168,7 +160,7 @@ elif page == "⌛ | History":
     if not history:
         st.warning("No Detection History")
     else:
-        # Tampilkan history dalam grid layout yang lebih rapi
+        i
         for i, record in enumerate(history):
             with st.container():
                 col1, col2 = st.columns([2, 1])
@@ -178,18 +170,17 @@ elif page == "⌛ | History":
                     st.write(f"**Source Type:** {record.source_type}")
                     st.write(f"**Source Path:** {record.source_path}")
                     
-                    # Display image with controlled size
                     image_data = base64.b64encode(record.detected_image).decode('utf-8')
                     st.markdown(f'<img class="history-image" src="data:image/png;base64,{image_data}" alt="Detected Image">', unsafe_allow_html=True)
                 
                 with col2:
-                    st.write("")  # spacer
-                    st.write("")  # spacer
+                    st.write("")
+                    st.write("") 
                     if st.button('🗑️ Delete', key=f'delete_{record.id}', type='secondary'):
                         helper.delete_detection_record(record.id)
                         st.rerun()
                 
-                st.divider()  # Add separator between records
+                st.divider()  
 # About Page
 elif page == "ℹ️ | About":
     st.title("Tentang Proyek Ini")
