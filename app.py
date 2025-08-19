@@ -160,7 +160,6 @@ elif page == "⌛ | History":
     if not history:
         st.warning("No Detection History")
     else:
-        i
         for i, record in enumerate(history):
             with st.container():
                 col1, col2 = st.columns([2, 1])
